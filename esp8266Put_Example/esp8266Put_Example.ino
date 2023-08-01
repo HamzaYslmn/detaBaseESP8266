@@ -1,7 +1,6 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
-#include <WiFiClientSecureBearSSL.h>
 
 // Replace with your actual project ID and base name
 const char* detaKey = "a0uhqqxxxxx_xxxxxxxxxxxxxxxxxx";
