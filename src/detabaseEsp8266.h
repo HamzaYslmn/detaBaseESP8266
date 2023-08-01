@@ -9,7 +9,7 @@
 
 class DetabaseEsp8266 {
 public:
-  DetabaseEsp8266(const String& key, const String& id, const String& baseName);
+  DetabaseEsp8266(const String& key = "", const String& id = "", const String& baseName = "");
   void addKey(const String& key);
   void addData(const String& field, const String& value); // Overloaded function for String data
   void addData(const String& field, int value); // Overloaded function for int data
