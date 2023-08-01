@@ -1,7 +1,8 @@
+// detabaseEsp8266.cpp
 #include "detabaseEsp8266.h"
 
 DetabaseEsp8266::DetabaseEsp8266(const String& key, const String& id, const String& baseName)
-    : detaKey(key), detaID(id), detaBaseName(baseName), doc(256) {
+    : detaKey(key), detaID(id), detaBaseName(baseName), doc(512) {
 }
 
 void DetabaseEsp8266::addKey(const String& key) {
@@ -38,6 +39,9 @@ String DetabaseEsp8266::sendData() {
   }
 
   http.end();
+
+  // Reset the DynamicJsonDocument after sending the data
+  doc.clear();
 
   return responsePayload;
 }

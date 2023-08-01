@@ -58,7 +58,7 @@ void printJsonData(const String& jsonString) {
 //---------------------------------------------------------------------------------------------------
 void deletekey() {
   // Delete the item
-  int deleteResponseCode = detabase.deleteItem("abcdefg");
+  int deleteResponseCode = detabase.deleteItem(entrykey);
   if (deleteResponseCode == 200) {
     Serial.println("Item successfully deleted.");
   } else {
@@ -89,11 +89,13 @@ void setup() {
   // Retrieve and display the item
   GetKeyitem();
 
-  delay(10000);
   // Delete the item
   deletekey();
 }
 
 void loop() {
   // Your code here
+  sendkeydetaspace();
+  delay(5000);
+  deletekey();
 }
