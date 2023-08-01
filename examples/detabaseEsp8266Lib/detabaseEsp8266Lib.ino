@@ -12,24 +12,25 @@ const char* password = "PASSWORD";
 
 DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 
+String entrykey = "123456";
+
 //---------------------------------------------------------------------------------------------------
-void sendkeydetaspace(){
+void sendkeydetaspace() {
   // Add data to the item
-  int entrykey = 123456;
-  detabase.addKey(entrykey.c_str());
+  detabase.addKey(entrykey);
   detabase.addData("field1", "merhaba");
   detabase.addData("kanser", "maba");
   detabase.addData("field3", "me");
-  
+
   // Send data and get the response payload
   String sentPayload = detabase.sendData();
   Serial.println("Data sent successfully. Payload:");
   Serial.println(sentPayload);
 }
 //---------------------------------------------------------------------------------------------------
-void GetKeyitem(){
+void GetKeyitem() {
   // Retrieve and display the item
-  String itemData = detabase.getItem("abcdefg");
+  String itemData = detabase.getItem(entrykey);
   Serial.println("Item Data:");
   printJsonData(itemData);
 }
@@ -55,7 +56,7 @@ void printJsonData(const String& jsonString) {
   Serial.println(field3Value);
 }
 //---------------------------------------------------------------------------------------------------
-void deletekey(){
+void deletekey() {
   // Delete the item
   int deleteResponseCode = detabase.deleteItem("abcdefg");
   if (deleteResponseCode == 200) {
