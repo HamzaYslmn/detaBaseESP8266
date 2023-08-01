@@ -4,12 +4,20 @@ DetabaseEsp8266::DetabaseEsp8266(const char* key, const char* id, const char* ba
     : detaKey(key), detaID(id), detaBaseName(baseName), doc(256) {
 }
 
-void DetabaseEsp8266::addKey(const char* key) {
+void DetabaseEsp8266::addKey(const String& key) {
   JsonObject item1 = doc["items"].createNestedObject();
   item1["key"] = key;
 }
 
 void DetabaseEsp8266::addData(const char* field, const char* value) {
+  doc["items"][0][field] = value;
+}
+
+void DetabaseEsp8266::addData(const char* field, const String& value) {
+  doc["items"][0][field] = value;
+}
+
+void DetabaseEsp8266::addData(const char* field, int value) {
   doc["items"][0][field] = value;
 }
 
