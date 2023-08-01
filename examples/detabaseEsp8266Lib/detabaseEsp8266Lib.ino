@@ -15,7 +15,8 @@ DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 //---------------------------------------------------------------------------------------------------
 void sendkeydetaspace(){
   // Add data to the item
-  detabase.addKey("abcdefg");
+  int entrykey = 123456;
+  detabase.addKey(entrykey.c_str());
   detabase.addData("field1", "merhaba");
   detabase.addData("kanser", "maba");
   detabase.addData("field3", "me");
