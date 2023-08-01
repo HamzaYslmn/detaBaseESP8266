@@ -3,22 +3,33 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecureBearSSL.h>
 
+// Replace with your actual project ID and base name
+const char* detaKey = "a0uhqqxxxxx_xxxxxxxxxxxxxxxxxx";
+const char* detaID = "a0uhqqxxxxx";
+const char* detaBaseName = "LOG";
+const char* ssid     = "SSID";
+const char* password = "PASSWORD";
+
 void setup() {
   Serial.begin(115200);
   delay(100);
+  
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to ");
+  Serial.print(ssid); Serial.println(" ...");
 
-  // Replace with your actual project ID and base name
-  const char* detaID = "a0uhqqqqqqy";
-  const char* detaBaseName = "LOG";
-  // Replace with your actual Data Key (X-API-Key)
-  String api_key = "a0uhqqqqqqy_aSecretValue";
+  int i = 0;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(++i); Serial.print(' ');
+  }
+  Serial.println("Connection Done");
 
   // Build the URL for the base
   String url = "https://database.deta.sh/v1/" + String(detaID) + "/" + String(detaBaseName) + "/items";
 
   // Create a JSON buffer
-  const size_t capacity = JSON_ARRAY_SIZE(2) + 2 * JSON_OBJECT_SIZE(3);
-  DynamicJsonDocument doc(capacity);
+  DynamicJsonDocument doc(256);
 
   // Create an array of items
   JsonArray items = doc.createNestedArray("items");
@@ -39,7 +50,7 @@ void setup() {
   client.setInsecure();
   http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
-  http.addHeader("X-API-Key", api_key);
+  http.addHeader("X-API-Key", String(detaKey));
 
   // Send the PUT request with the JSON payload
   int httpResponseCode = http.PUT(payload);
