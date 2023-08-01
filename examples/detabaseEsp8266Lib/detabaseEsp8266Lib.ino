@@ -1,7 +1,7 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
-#include "detabaseEsp8266.h"
+#include <detabaseEsp8266.h>
 
 // Replace with your actual project ID and base name
 const char* detaKey = "a0uhqqxxxxx_xxxxxxxxxxxxxxxxxx";
@@ -12,23 +12,8 @@ const char* password = "PASSWORD";
 
 DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 
-void setup() {
-  Serial.begin(115200);
-  delay(100);
-
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to ");
-  Serial.print(ssid);
-  Serial.println(" ...");
-
-  int i = 0;
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.print(++i);
-    Serial.print(' ');
-  }
-  Serial.println("Connection Done");
-
+//---------------------------------------------------------------------------------------------------
+void sendkeydetaspace(){
   // Add data to the item
   detabase.addKey("abcdefg");
   detabase.addData("field1", "merhaba");
@@ -39,22 +24,14 @@ void setup() {
   String sentPayload = detabase.sendData();
   Serial.println("Data sent successfully. Payload:");
   Serial.println(sentPayload);
-
+}
+//---------------------------------------------------------------------------------------------------
+void GetKeyitem(){
   // Retrieve and display the item
   String itemData = detabase.getItem("abcdefg");
   Serial.println("Item Data:");
   printJsonData(itemData);
-
-  delay(10000);
-  // Delete the item
-  int deleteResponseCode = detabase.deleteItem("abcdefg");
-  if (deleteResponseCode == 200) {
-    Serial.println("Item successfully deleted.");
-  } else {
-    Serial.println("Failed to delete item.");
-  }
 }
-
 void printJsonData(const String& jsonString) {
   DynamicJsonDocument doc(256);
   DeserializationError error = deserializeJson(doc, jsonString);
@@ -75,6 +52,44 @@ void printJsonData(const String& jsonString) {
   Serial.println(kanserValue);
   Serial.print("Field3: ");
   Serial.println(field3Value);
+}
+//---------------------------------------------------------------------------------------------------
+void deletekey(){
+  // Delete the item
+  int deleteResponseCode = detabase.deleteItem("abcdefg");
+  if (deleteResponseCode == 200) {
+    Serial.println("Item successfully deleted.");
+  } else {
+    Serial.println("Failed to delete item.");
+  }
+}
+//---------------------------------------------------------------------------------------------------
+void setup() {
+  Serial.begin(115200);
+  delay(100);
+
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to ");
+  Serial.print(ssid);
+  Serial.println(" ...");
+
+  int i = 0;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(++i);
+    Serial.print(' ');
+  }
+  Serial.println("Connection Done");
+
+  // PUT data to the item
+  sendkeydetaspace();
+
+  // Retrieve and display the item
+  GetKeyitem();
+
+  delay(10000);
+  // Delete the item
+  deletekey();
 }
 
 void loop() {
