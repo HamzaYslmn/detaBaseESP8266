@@ -16,6 +16,11 @@ Use 2.4Ghz Wifi
 ### Result Struct
 <img width="649" alt="image" src="https://github.com/HamzaYslmn/detaBaseArduinoESP8266/assets/78810304/1a4f9684-7c15-4a64-9853-c701b0a2f87b">
 
+#Add Deta
+
+```c
+DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
+```
 #Put Items
 ```c
 void sendkeydetaspace(){
