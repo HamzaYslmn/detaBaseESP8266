@@ -8,14 +8,13 @@
 
 class DetabaseEsp8266 {
 public:
-  DetabaseEsp8266(const char* key, const char* id, const char* baseName);
-  void addKey(const String& key); // Updated parameter type to String&
-  void addData(const char* field, const char* value);
-  void addData(const char* field, const String& value); // Overloaded function for String data
-  void addData(const char* field, int value); // Overloaded function for int data
+  DetabaseEsp8266(const String& key, const String& id, const String& baseName);
+  void addKey(const String& key);
+  void addData(const String& field, const String& value); // Overloaded function for String data
+  void addData(const String& field, int value); // Overloaded function for int data
   String sendData();
-  String getItem(const char* itemKey);
-  int deleteItem(const char* itemKey);
+  String getItem(const String& itemKey);
+  int deleteItem(const String& itemKey);
 
 private:
   String detaKey;
