@@ -8,14 +8,14 @@ void setup() {
   delay(100);
 
   // Replace with your actual project ID and base name
-  const char* detaID = "a0uhqqtu49y";
+  const char* detaID = "a0uhqqqqqqy";
   const char* detaBaseName = "LOG";
 
   // Build the URL for the base
   String url = "https://database.deta.sh/v1/" + String(detaID) + "/" + String(detaBaseName) + "/items";
 
   // Replace with your actual Data Key (X-API-Key)
-  String api_key = "a0abcyxz_aSecretValue";
+  String api_key = "a0uhqqqqqqy_aSecretValue";
 
   // Create a JSON buffer
   const size_t capacity = JSON_ARRAY_SIZE(2) + 2 * JSON_OBJECT_SIZE(3);
