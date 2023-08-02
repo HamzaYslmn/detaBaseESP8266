@@ -14,7 +14,8 @@ To use this library, you'll need the following:
 Use 2.4Ghz Wifi
 
 ### Result Struct
-<img width="649" alt="image" src="https://github.com/HamzaYslmn/detaBaseArduinoESP8266/assets/78810304/1a4f9684-7c15-4a64-9853-c701b0a2f87b">
+<img width="1246" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/130208c8-2317-4879-9156-c14384fb24bb">
+
 
 #Add Deta
 
@@ -75,4 +76,5 @@ void deleteSpaceKey() {
   }
 }
 ```
-<img width="966" alt="image" src="https://github.com/HamzaYslmn/detaBaseArduinoESP8266/assets/78810304/4b9541d7-4251-47b5-ae90-4b2caa64158c">
+<img width="968" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/4ce0e525-5980-423c-b6c0-6c71752ae59f">
+
