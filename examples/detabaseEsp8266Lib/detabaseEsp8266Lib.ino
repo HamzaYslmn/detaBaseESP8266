@@ -1,62 +1,57 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
-#include <detabaseEsp8266.h>
+#include "detabaseEsp8266.h"
 
 // Replace with your actual project ID and base name
-const char* detaKey = "a0uhqqxxxxx_xxxxxxxxxxxxxxxxxx";
+const char* detaKey = "a0uhqqxxxx_xxxxxxxxxxxxxxxxxxxxxxxx";
 const char* detaID = "a0uhqqxxxxx";
 const char* detaBaseName = "LOG";
-const char* ssid     = "SSID";
+const char* ssid = "SSID";
 const char* password = "PASSWORD";
 
 DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 
 String entrykey = "123456";
 
-//---------------------------------------------------------------------------------------------------
-void sendkeydetaspace() {
+void sendDetaSpace() {
   // Add data to the item
   detabase.addKey(entrykey);
-  detabase.addData("field1", "merhaba");
-  detabase.addData("kanser", "maba");
-  detabase.addData("field3", "me");
+  detabase.addData("stringValue", "merhaba");
+  detabase.addData("intValue", 123);
+  detabase.addData("floatValue", 123.123f); // Use the 'f' suffix to specify a float value
+  detabase.addData("boolValue", true);
 
   // Send data and get the response payload
   String sentPayload = detabase.sendData();
   Serial.println("Data sent successfully. Payload:");
   Serial.println(sentPayload);
 }
-//---------------------------------------------------------------------------------------------------
-void GetKeyitem() {
+
+void GetDetaSpace() {
   // Retrieve and display the item
   String itemData = detabase.getItem(entrykey);
   Serial.println("Item Data:");
-  printJsonData(itemData);
+  Serial.println(itemData);
+
+  // Access individual fields using the new functions
+  String stringValue = detabase.getData("stringValue");
+  int intValue = detabase.getIntData("intValue");
+  float floatValue = detabase.getFloatData("floatValue");
+  bool boolValue = detabase.getBoolData("boolValue");
+
+  // Print the retrieved values
+  Serial.print("stringValue: ");
+  Serial.println(stringValue);
+  Serial.print("intValue: ");
+  Serial.println(intValue);
+  Serial.print("floatValue: ");
+  Serial.println(floatValue);
+  Serial.print("boolValue: ");
+  Serial.println(boolValue);
 }
-void printJsonData(const String& jsonString) {
-  DynamicJsonDocument doc(256);
-  DeserializationError error = deserializeJson(doc, jsonString);
 
-  if (error) {
-    Serial.println("Failed to parse JSON data.");
-    return;
-  }
-
-  // Access individual fields using doc["field_name"].as<Type>()
-  String field1Value = doc["field1"];
-  String kanserValue = doc["kanser"];
-  String field3Value = doc["field3"];
-
-  Serial.print("Field1: ");
-  Serial.println(field1Value);
-  Serial.print("Kanser: ");
-  Serial.println(kanserValue);
-  Serial.print("Field3: ");
-  Serial.println(field3Value);
-}
-//---------------------------------------------------------------------------------------------------
-void deletekey() {
+void deleteSpaceKey() {
   // Delete the item
   int deleteResponseCode = detabase.deleteItem(entrykey);
   if (deleteResponseCode == 200) {
@@ -65,7 +60,7 @@ void deletekey() {
     Serial.println("Failed to delete item.");
   }
 }
-//---------------------------------------------------------------------------------------------------
+
 void setup() {
   Serial.begin(115200);
   delay(100);
@@ -82,20 +77,14 @@ void setup() {
     Serial.print(' ');
   }
   Serial.println("Connection Done");
-
-  // PUT data to the item
-  sendkeydetaspace();
-
-  // Retrieve and display the item
-  GetKeyitem();
-
-  // Delete the item
-  deletekey();
 }
 
 void loop() {
   // Your code here
-  sendkeydetaspace();
+  sendDetaSpace();
   delay(5000);
-  deletekey();
+  GetDetaSpace();
+  delay(5000);
+  deleteSpaceKey();
+  delay(5000);
 }
