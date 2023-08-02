@@ -9,22 +9,8 @@ const char* detaBaseName = "LOG";
 const char* ssid     = "SSID";
 const char* password = "PASSWORD";
 
-void setup() {
-  Serial.begin(115200);
-  delay(100);
-  
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to ");
-  Serial.print(ssid); Serial.println(" ...");
-
-  int i = 0;
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.print(++i); Serial.print(' ');
-  }
-  Serial.println("Connection Done");
-
-  // Specify the key of the item you want to retrieve
+void detaGet(){
+    // Specify the key of the item you want to retrieve
   String itemKey = "item1";
 
   // Build the URL for the specific item
@@ -64,6 +50,22 @@ void setup() {
   }
 
   http.end();
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(100);
+  
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to ");
+  Serial.print(ssid); Serial.println(" ...");
+
+  int i = 0;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(++i); Serial.print(' ');
+  }
+  Serial.println("Connection Done");
 }
 
 void loop() {

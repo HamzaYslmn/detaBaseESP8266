@@ -9,21 +9,8 @@ const char* detaBaseName = "LOG";
 const char* ssid     = "SSID";
 const char* password = "PASSWORD";
 
-void setup() {
-  Serial.begin(115200);
-  delay(100);
+void detaPUT(){
   
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to ");
-  Serial.print(ssid); Serial.println(" ...");
-
-  int i = 0;
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.print(++i); Serial.print(' ');
-  }
-  Serial.println("Connection Done");
-
   // Build the URL for the base
   String url = "https://database.deta.sh/v1/" + String(detaID) + "/" + String(detaBaseName) + "/items";
 
@@ -64,6 +51,23 @@ void setup() {
   }
 
   http.end();
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(100);
+  
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to ");
+  Serial.print(ssid); Serial.println(" ...");
+
+  int i = 0;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(++i); Serial.print(' ');
+  }
+  Serial.println("Connection Done");
+
 }
 
 void loop() {
