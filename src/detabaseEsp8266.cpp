@@ -2,7 +2,6 @@
 
 DetabaseEsp8266::DetabaseEsp8266(const String& key, const String& id, const String& baseName)
     : detaKey(key), detaID(id), detaBaseName(baseName), doc(512), dataObject(doc.to<JsonObject>()) {
-  configTime(0, 0, "pool.ntp.org"); // get UTC time via NTP
 }
 
 void DetabaseEsp8266::addKey(const String& key) {

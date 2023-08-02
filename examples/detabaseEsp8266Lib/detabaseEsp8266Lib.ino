@@ -64,6 +64,7 @@ void deleteSpaceKey() {
 
 void setup() {
   Serial.begin(115200);
+  configTime(10800, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
   delay(100);
 
   WiFi.begin(ssid, password);
