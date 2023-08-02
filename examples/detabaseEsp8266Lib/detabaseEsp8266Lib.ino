@@ -9,7 +9,7 @@ const char* detaBaseName = "LOG";
 const char* ssid = "SSID";
 const char* password = "PASSWORD";
 
-String entryKey = "entrykey";
+String entryKey = "MERHABA";
 
 DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 
