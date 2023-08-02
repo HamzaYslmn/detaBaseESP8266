@@ -44,16 +44,14 @@ String DetabaseEsp8266::sendData() {
   http.addHeader("X-API-Key", detaKey);
 
   int httpResponseCode = http.PUT(payload);
-  String responsePayload = "";
+  lastResponseCode = httpResponseCode;
 
+  String responsePayload = "";
   if (httpResponseCode > 0) {
     responsePayload = http.getString();
-    deserializeJson(doc, responsePayload);
-    dataObject = doc.as<JsonObject>();
+    updateDataObject(responsePayload);
+    lastPayloadString = responsePayload; // Update lastPayloadString with the received payload
   }
-
-  // Print the HTTP response code
-  printResponseCode(httpResponseCode);
 
   http.end();
 
@@ -72,16 +70,14 @@ String DetabaseEsp8266::getItem(const String& itemKey) {
   http.addHeader("X-API-Key", detaKey);
 
   int httpResponseCode = http.GET();
-  String responsePayload = "";
+  lastResponseCode = httpResponseCode;
 
+  String responsePayload = "";
   if (httpResponseCode > 0) {
     responsePayload = http.getString();
-    deserializeJson(doc, responsePayload);
-    dataObject = doc.as<JsonObject>();
+    updateDataObject(responsePayload);
+    lastPayloadString = responsePayload; // Update lastPayloadString with the received payload
   }
-
-  // Print the HTTP response code
-  printResponseCode(httpResponseCode);
 
   http.end();
 
@@ -97,9 +93,7 @@ int DetabaseEsp8266::deleteItem(const String& itemKey) {
   http.addHeader("X-API-Key", detaKey);
 
   int httpResponseCode = http.DELETE();
-
-  // Print the HTTP response code
-  printResponseCode(httpResponseCode);
+  lastResponseCode = httpResponseCode;
 
   http.end();
 
@@ -138,7 +132,15 @@ bool DetabaseEsp8266::getBoolData(const String& field) {
   }
 }
 
-void DetabaseEsp8266::printResponseCode(int code) {
-  Serial.print("HTTP Response code: ");
-  Serial.println(code);
+int DetabaseEsp8266::lastResponse() const {
+  return lastResponseCode;
+}
+
+String DetabaseEsp8266::lastPayload() const {
+  return lastPayloadString;
+}
+
+void DetabaseEsp8266::updateDataObject(const String& payload) {
+  deserializeJson(doc, payload);
+  dataObject = doc.as<JsonObject>();
 }
