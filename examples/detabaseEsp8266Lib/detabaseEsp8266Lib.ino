@@ -3,64 +3,15 @@
 #include <ESP8266WiFi.h>
 #include "detabaseEsp8266.h"
 
-// Replace with your actual project ID and base name
 const char* detaKey = "a0uhqqxxxx_xxxxxxxxxxxxxxxxxxxxxxxx";
 const char* detaID = "a0uhqqxxxxx";
 const char* detaBaseName = "LOG";
 const char* ssid = "SSID";
 const char* password = "PASSWORD";
 
+String entryKey = "entrykey";
+
 DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
-
-String entrykey = "123456";
-
-void sendDetaSpace() {
-  // Add data to the item
-  detabase.addKey(entrykey);
-  detabase.addData("stringValue", "merhaba");
-  detabase.addData("intValue", 123);
-  detabase.addData("floatValue", 123.123f); // Use the 'f' suffix to specify a float value
-  detabase.addData("boolValue", true);
-
-  // Send data and get the response payload
-  detabase.sendData();
-  Serial.println(detabase.lastResponse()); // Print last response code
-  Serial.println(detabase.lastPayload()); // Print last payload
-}
-
-void GetDetaSpace() {
-  // Retrieve and display the item
-  detabase.getItem(entrykey);
-  Serial.println(detabase.lastResponse()); // Print last response code
-  Serial.println(detabase.lastPayload()); // Print last payload
-
-  // Access individual fields using the new functions
-  String stringValue = detabase.getData("stringValue");
-  int intValue = detabase.getIntData("intValue");
-  float floatValue = detabase.getFloatData("floatValue");
-  bool boolValue = detabase.getBoolData("boolValue");
-
-  // Print the retrieved values
-  Serial.print("stringValue: ");
-  Serial.println(stringValue);
-  Serial.print("intValue: ");
-  Serial.println(intValue);
-  Serial.print("floatValue: ");
-  Serial.println(floatValue);
-  Serial.print("boolValue: ");
-  Serial.println(boolValue);
-}
-
-void deleteSpaceKey() {
-  detabase.deleteItem(entrykey);
-  Serial.println(detabase.lastResponse());
-  if (detabase.lastResponse() == 200) {
-    Serial.println("Item deleted successfully");
-  }
-  else {
-    Serial.println("Item deletion failed");
-  }
-}
 
 void setup() {
   Serial.begin(115200);
@@ -70,7 +21,7 @@ void setup() {
   WiFi.begin(ssid, password);
   Serial.print("Connecting to ");
   Serial.print(ssid);
-  Serial.println(" ...");
+  Serial.println("...");
 
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
@@ -84,9 +35,64 @@ void setup() {
 void loop() {
   // Your code here
   sendDetaSpace();
-  delay(5000);
+  delay(3000);
   GetDetaSpace();
-  delay(5000);
+  delay(3000);
   deleteSpaceKey();
-  delay(5000);
+  delay(3000);
+}
+
+// Example of PUT request
+void sendDetaSpace() {
+  detabase.addData("key", entryKey);
+  detabase.addData("stringValue", "merhaba"); // string
+  detabase.addData("intValue", 123);         // int
+  detabase.addData("floatValue", 123.123f);  // Use the 'f' suffix to specify a float value
+  detabase.addData("boolValue", true);       // boolean
+
+  bool success = detabase.sendData(); // send
+
+  Serial.print("HTTP Response code: ");
+  Serial.println(detabase.lastResponseCode); // 200 OK
+  Serial.println("Response Payload:");
+  Serial.println(detabase.responsePayload); // Payload
+
+  if (success) {
+    Serial.println("Data added successfully!");
+  } else {
+    Serial.println("Failed to add data!");
+  }
+}
+
+// Example of GET request
+void GetDetaSpace() {
+  detabase.getItem(entryKey); // get
+  Serial.print("HTTP Response code: ");
+  Serial.println(detabase.lastResponseCode);
+  Serial.println("Response Payload:");
+  Serial.println(detabase.responsePayload);
+
+  String stringValue = detabase.getData("stringValue");
+  int intValue = detabase.getIntData("intValue");
+  float floatValue = detabase.getFloatData("floatValue");
+  bool boolValue = detabase.getBoolData("boolValue");
+
+  Serial.print("stringValue: ");
+  Serial.println(stringValue);
+  Serial.print("intValue: ");
+  Serial.println(intValue);
+  Serial.print("floatValue: ");
+  Serial.println(floatValue);
+  Serial.print("boolValue: ");
+  Serial.println(boolValue);
+}
+
+// Example of DELETE request
+void deleteSpaceKey() {
+  bool isDeleted = detabase.deleteItem(entryKey);
+  if (isDeleted) { // 200 OK
+    Serial.println("Item deleted successfully");
+  } else {
+    Serial.println("Item deletion failed");
+  }
 }

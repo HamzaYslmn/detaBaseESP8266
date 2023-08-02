@@ -25,34 +25,40 @@ DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 #Put Items
 ```c
 void sendDetaSpace() {
-  // Add data to the item
-  detabase.addKey(entrykey);
-  detabase.addData("stringValue", "merhaba");
-  detabase.addData("intValue", 123);
-  detabase.addData("floatValue", 123.123f); // Use the 'f' suffix to specify a float value
-  detabase.addData("boolValue", true);
+  detabase.addData("key", entryKey);
+  detabase.addData("stringValue", "merhaba"); // string
+  detabase.addData("intValue", 123);         // int
+  detabase.addData("floatValue", 123.123f);  // Use the 'f' suffix to specify a float value
+  detabase.addData("boolValue", true);       // boolean
 
-  // Send data and get the response payload
-  detabase.sendData();
-  Serial.println(detabase.lastResponse()); // Print last response code
-  Serial.println(detabase.lastPayload()); // Print last payload
+  bool success = detabase.sendData(); // send
+
+  Serial.print("HTTP Response code: ");
+  Serial.println(detabase.lastResponseCode); // 200 OK
+  Serial.println("Response Payload:");
+  Serial.println(detabase.responsePayload); // Payload
+
+  if (success) {
+    Serial.println("Data added successfully!");
+  } else {
+    Serial.println("Failed to add data!");
+  }
 }
 ```
 #Get Item
 ```c
 void GetDetaSpace() {
-  // Retrieve and display the item
-  detabase.getItem(entrykey);
-  Serial.println(detabase.lastResponse()); // Print last response code
-  Serial.println(detabase.lastPayload()); // Print last payload
+  detabase.getItem(entryKey); // get
+  Serial.print("HTTP Response code: ");
+  Serial.println(detabase.lastResponseCode);
+  Serial.println("Response Payload:");
+  Serial.println(detabase.responsePayload);
 
-  // Access individual fields using the new functions
   String stringValue = detabase.getData("stringValue");
   int intValue = detabase.getIntData("intValue");
   float floatValue = detabase.getFloatData("floatValue");
   bool boolValue = detabase.getBoolData("boolValue");
 
-  // Print the retrieved values
   Serial.print("stringValue: ");
   Serial.println(stringValue);
   Serial.print("intValue: ");
@@ -66,12 +72,10 @@ void GetDetaSpace() {
 #Delete Item
 ```c
 void deleteSpaceKey() {
-  detabase.deleteItem(entrykey);
-  Serial.println(detabase.lastResponse());
-  if (detabase.lastResponse() == 200) {
+  bool isDeleted = detabase.deleteItem(entryKey);
+  if (isDeleted) { // 200 OK
     Serial.println("Item deleted successfully");
-  }
-  else {
+  } else {
     Serial.println("Item deletion failed");
   }
 }

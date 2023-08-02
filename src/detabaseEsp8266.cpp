@@ -1,145 +1,118 @@
 #include "detabaseEsp8266.h"
 
-DetabaseEsp8266::DetabaseEsp8266(const String& key, const String& id, const String& baseName)
-    : detaKey(key), detaID(id), detaBaseName(baseName), doc(512), dataObject(doc.to<JsonObject>()) {
+DetabaseEsp8266::DetabaseEsp8266(const char* apiKey, const char* projectId, const char* baseName, size_t capacity)
+  : apiKey(apiKey), projectId(projectId), baseName(baseName), capacity(capacity), doc(capacity) {}
+
+void DetabaseEsp8266::addData(const char* key, const String& value) {
+  doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addKey(const String& key) {
-  JsonObject item1 = doc["items"].createNestedObject();
-  item1["key"] = key;
+void DetabaseEsp8266::addData(const char* key, const char* value) {
+  doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const String& field, const String& value) {
-  doc["items"][0][field] = value;
+void DetabaseEsp8266::addData(const char* key, int value) {
+  doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const String& field, int value) {
-  doc["items"][0][field] = value;
+void DetabaseEsp8266::addData(const char* key, float value) {
+  doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const String& field, float value) {
-  doc["items"][0][field] = value;
+void DetabaseEsp8266::addData(const char* key, bool value) {
+  doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const String& field, bool value) {
-  doc["items"][0][field] = value;
-}
+bool DetabaseEsp8266::sendData() {
+  // Build the URL for the base
+  String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items";
 
-void DetabaseEsp8266::addData(const String& field, const char* value) {
-  doc["items"][0][field] = value;
-}
-
-String DetabaseEsp8266::sendData() {
-  String url = "https://database.deta.sh/v1/" + detaID + "/" + detaBaseName + "/items";
-
+  // Serialize the JSON payload to a string
   String payload;
   serializeJson(doc, payload);
 
-  client.setInsecure(); // Ignore SSL certificate verification (for testing only)
-
+  // Initialize the HTTP client and set headers
+  WiFiClientSecure client;
   HTTPClient http;
+  client.setInsecure();
   http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
-  http.addHeader("X-API-Key", detaKey);
+  http.addHeader("X-API-Key", String(apiKey));
 
+  // Send the PUT request with the JSON payload
   int httpResponseCode = http.PUT(payload);
+
+  // Store the response code and payload
   lastResponseCode = httpResponseCode;
+  responsePayload = http.getString();
 
-  String responsePayload = "";
-  if (httpResponseCode > 0) {
-    responsePayload = http.getString();
-    updateDataObject(responsePayload);
-    lastPayloadString = responsePayload; // Update lastPayloadString with the received payload
-  }
-
-  http.end();
-
-  // Reset the DynamicJsonDocument after sending the data
-  doc.clear();
-
-  return responsePayload;
+  // Check the response code
+  return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
-String DetabaseEsp8266::getItem(const String& itemKey) {
-  String url = "https://database.deta.sh/v1/" + detaID + "/" + detaBaseName + "/items/" + itemKey;
+void DetabaseEsp8266::getItem(const String& key) {
+  // Build the URL for the specific item
+  String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items/" + key;
 
+  // Initialize the HTTP client and set headers
+  WiFiClientSecure client;
   HTTPClient http;
+  client.setInsecure();
   http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
-  http.addHeader("X-API-Key", detaKey);
+  http.addHeader("X-API-Key", String(apiKey));
 
+  // Send the GET request
   int httpResponseCode = http.GET();
+
+  // Store the response code and payload
   lastResponseCode = httpResponseCode;
-
-  String responsePayload = "";
-  if (httpResponseCode > 0) {
-    responsePayload = http.getString();
-    updateDataObject(responsePayload);
-    lastPayloadString = responsePayload; // Update lastPayloadString with the received payload
-  }
-
-  http.end();
-
-  return responsePayload;
+  responsePayload = http.getString();
 }
 
-int DetabaseEsp8266::deleteItem(const String& itemKey) {
-  String url = "https://database.deta.sh/v1/" + detaID + "/" + detaBaseName + "/items/" + itemKey;
+bool DetabaseEsp8266::deleteItem(const String& key) {
+  // Build the URL for the specific item
+  String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items/" + key;
 
+  // Initialize the HTTP client and set headers
+  WiFiClientSecure client;
   HTTPClient http;
+  client.setInsecure();
   http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
-  http.addHeader("X-API-Key", detaKey);
+  http.addHeader("X-API-Key", String(apiKey));
 
-  int httpResponseCode = http.DELETE();
+  // Send the DELETE request
+  int httpResponseCode = http.sendRequest("DELETE");
+
+  // Store the response code and payload
   lastResponseCode = httpResponseCode;
+  responsePayload = http.getString();
 
-  http.end();
-
-  return httpResponseCode;
+  // Check the response code
+  return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
-String DetabaseEsp8266::getData(const String& field) {
-  if (dataObject.containsKey(field)) {
-    return dataObject[field].as<String>();
-  } else {
-    return "";
-  }
+String DetabaseEsp8266::getData(const char* key) {
+  DynamicJsonDocument doc(capacity);
+  deserializeJson(doc, responsePayload);
+  return doc[key].as<String>();
 }
 
-int DetabaseEsp8266::getIntData(const String& field) {
-  if (dataObject.containsKey(field)) {
-    return dataObject[field].as<int>();
-  } else {
-    return 0;
-  }
+int DetabaseEsp8266::getIntData(const char* key) {
+  DynamicJsonDocument doc(capacity);
+  deserializeJson(doc, responsePayload);
+  return doc[key].as<int>();
 }
 
-float DetabaseEsp8266::getFloatData(const String& field) {
-  if (dataObject.containsKey(field)) {
-    return dataObject[field].as<float>();
-  } else {
-    return 0.0f;
-  }
+float DetabaseEsp8266::getFloatData(const char* key) {
+  DynamicJsonDocument doc(capacity);
+  deserializeJson(doc, responsePayload);
+  return doc[key].as<float>();
 }
 
-bool DetabaseEsp8266::getBoolData(const String& field) {
-  if (dataObject.containsKey(field)) {
-    return dataObject[field].as<bool>();
-  } else {
-    return false;
-  }
-}
-
-int DetabaseEsp8266::lastResponse() const {
-  return lastResponseCode;
-}
-
-String DetabaseEsp8266::lastPayload() const {
-  return lastPayloadString;
-}
-
-void DetabaseEsp8266::updateDataObject(const String& payload) {
-  deserializeJson(doc, payload);
-  dataObject = doc.as<JsonObject>();
+bool DetabaseEsp8266::getBoolData(const char* key) {
+  DynamicJsonDocument doc(capacity);
+  deserializeJson(doc, responsePayload);
+  return doc[key].as<String>() == "true";
 }
