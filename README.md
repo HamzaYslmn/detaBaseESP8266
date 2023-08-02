@@ -23,13 +23,14 @@ DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 ```
 #Put Items
 ```c
-void sendkeydetaspace(){
+void sendDetaSpace() {
   // Add data to the item
-  detabase.addKey("abcdefg"); //key = abcdefg       key.c_str()
-  detabase.addData("field1", "merhaba");
-  detabase.addData("kanser", "maba");
-  detabase.addData("field3", "me");
-  
+  detabase.addKey(entrykey);
+  detabase.addData("stringValue", "merhaba");
+  detabase.addData("intValue", 123);
+  detabase.addData("floatValue", 123.123f); // Use the 'f' suffix to specify a float value
+  detabase.addData("boolValue", true);
+
   // Send data and get the response payload
   String sentPayload = detabase.sendData();
   Serial.println("Data sent successfully. Payload:");
@@ -38,39 +39,34 @@ void sendkeydetaspace(){
 ```
 #Get Item
 ```c
-void GetKeyitem(){
+void GetDetaSpace() {
   // Retrieve and display the item
-  String itemData = detabase.getItem("abcdefg");
+  String itemData = detabase.getItem(entrykey);
   Serial.println("Item Data:");
-  printJsonData(itemData);
-}
-void printJsonData(const String& jsonString) {
-  DynamicJsonDocument doc(256);
-  DeserializationError error = deserializeJson(doc, jsonString);
+  Serial.println(itemData);
 
-  if (error) {
-    Serial.println("Failed to parse JSON data.");
-    return;
-  }
+  // Access individual fields using the new functions
+  String stringValue = detabase.getData("stringValue");
+  int intValue = detabase.getIntData("intValue");
+  float floatValue = detabase.getFloatData("floatValue");
+  bool boolValue = detabase.getBoolData("boolValue");
 
-  // Access individual fields using doc["field_name"].as<Type>()
-  String field1Value = doc["field1"];
-  String kanserValue = doc["kanser"];
-  String field3Value = doc["field3"];
-
-  Serial.print("Field1: ");
-  Serial.println(field1Value);
-  Serial.print("Kanser: ");
-  Serial.println(kanserValue);
-  Serial.print("Field3: ");
-  Serial.println(field3Value);
+  // Print the retrieved values
+  Serial.print("stringValue: ");
+  Serial.println(stringValue);
+  Serial.print("intValue: ");
+  Serial.println(intValue);
+  Serial.print("floatValue: ");
+  Serial.println(floatValue);
+  Serial.print("boolValue: ");
+  Serial.println(boolValue);
 }
 ```
 #Delete Item
 ```c
-void deletekey(){
+void deleteSpaceKey() {
   // Delete the item
-  int deleteResponseCode = detabase.deleteItem("abcdefg");
+  int deleteResponseCode = detabase.deleteItem(entrykey);
   if (deleteResponseCode == 200) {
     Serial.println("Item successfully deleted.");
   } else {
