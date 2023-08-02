@@ -32,18 +32,18 @@ void sendDetaSpace() {
   detabase.addData("boolValue", true);
 
   // Send data and get the response payload
-  String sentPayload = detabase.sendData();
-  Serial.println("Data sent successfully. Payload:");
-  Serial.println(sentPayload);
+  detabase.sendData();
+  Serial.println(detabase.lastResponse()); // Print last response code
+  Serial.println(detabase.lastPayload()); // Print last payload
 }
 ```
 #Get Item
 ```c
 void GetDetaSpace() {
   // Retrieve and display the item
-  String itemData = detabase.getItem(entrykey);
-  Serial.println("Item Data:");
-  Serial.println(itemData);
+  detabase.getItem(entrykey);
+  Serial.println(detabase.lastResponse()); // Print last response code
+  Serial.println(detabase.lastPayload()); // Print last payload
 
   // Access individual fields using the new functions
   String stringValue = detabase.getData("stringValue");
@@ -65,12 +65,13 @@ void GetDetaSpace() {
 #Delete Item
 ```c
 void deleteSpaceKey() {
-  // Delete the item
-  int deleteResponseCode = detabase.deleteItem(entrykey);
-  if (deleteResponseCode == 200) {
-    Serial.println("Item successfully deleted.");
-  } else {
-    Serial.println("Failed to delete item.");
+  detabase.deleteItem(entrykey);
+  Serial.println(detabase.lastResponse());
+  if (detabase.lastResponse() == 200) {
+    Serial.println("Item deleted successfully");
+  }
+  else {
+    Serial.println("Item deletion failed");
   }
 }
 ```
