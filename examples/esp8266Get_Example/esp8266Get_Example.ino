@@ -1,13 +1,17 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include "certs.h"
 
-// Replace with your actual project ID and base name
-const char* detaKey = "a0uhqqxxxxx_xxxxxxxxxxxxxxxxxx";
+const char* detaKey = "a0uhqqxxxx_xxxxxxxxxxxxxxxxxxxxxxxx";
 const char* detaID = "a0uhqqxxxxx";
 const char* detaBaseName = "LOG";
-const char* ssid     = "SSID";
+const char* ssid = "SSID";
 const char* password = "PASSWORD";
+
+DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
+
+X509List cert(cert_DigiCert_Global_Root_CA);
 
 void detaGet(){
     // Specify the key of the item you want to retrieve
@@ -54,6 +58,11 @@ void detaGet(){
 
 void setup() {
   Serial.begin(115200);
+
+  configTime(3*3600, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
+  WiFiClientSecure client;
+  client.setTrustAnchors(&cert);
+
   delay(100);
   
   WiFi.begin(ssid, password);

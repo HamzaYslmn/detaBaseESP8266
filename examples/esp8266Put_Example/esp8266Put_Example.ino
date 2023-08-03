@@ -1,13 +1,17 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include "certs.h"
 
-// Replace with your actual project ID and base name
-const char* detaKey = "a0uhqqxxxxx_xxxxxxxxxxxxxxxxxx";
+const char* detaKey = "a0uhqqxxxx_xxxxxxxxxxxxxxxxxxxxxxxx";
 const char* detaID = "a0uhqqxxxxx";
 const char* detaBaseName = "LOG";
-const char* ssid     = "SSID";
+const char* ssid = "SSID";
 const char* password = "PASSWORD";
+
+DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
+
+X509List cert(cert_DigiCert_Global_Root_CA);
 
 void detaPUT(){
   
@@ -22,8 +26,8 @@ void detaPUT(){
 
   // Create the first item and add it to the array
   JsonObject item1 = items.createNestedObject();
-  item1["key"] = "item1";
-  item1["field1"] = "value1";
+  item1["key"] = "Merhaba";
+  item1["field1"] = "MRB";
   item1["field2"] = "value2";
 
   // Serialize the JSON payload to a string
@@ -55,6 +59,11 @@ void detaPUT(){
 
 void setup() {
   Serial.begin(115200);
+
+  configTime(3*3600, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
+  WiFiClientSecure client;
+  client.setTrustAnchors(&cert);
+
   delay(100);
   
   WiFi.begin(ssid, password);
