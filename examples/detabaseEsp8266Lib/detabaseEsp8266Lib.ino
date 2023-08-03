@@ -1,7 +1,9 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include <WiFiClient.h>
 #include "detabaseEsp8266.h"
+#include "certs.h"
 
 const char* detaKey = "a0uhqqxxxx_xxxxxxxxxxxxxxxxxxxxxxxx";
 const char* detaID = "a0uhqqxxxxx";
@@ -13,9 +15,15 @@ String entryKey = "MERHABA";
 
 DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 
+X509List cert(cert_DigiCert_Global_Root_CA);
+
 void setup() {
   Serial.begin(115200);
-  configTime(10800, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
+
+  configTime(3*3600, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
+  WiFiClientSecure client;
+  client.setTrustAnchors(&cert);
+
   delay(100);
 
   WiFi.begin(ssid, password);
