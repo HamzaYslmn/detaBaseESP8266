@@ -1,4 +1,4 @@
-# DetabaseEsp8266 Library
+#DetabaseEsp8266 Library
 
 ## Introduction
 Esp8266 library for more convenient use of deta.sh collections
@@ -17,8 +17,19 @@ Use 2.4Ghz Wifi
 <img width="1246" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/130208c8-2317-4879-9156-c14384fb24bb">
 
 
-#Add Deta
+#SSL 
+```c
+#include "certs.h"
+X509List cert(cert_DigiCert_Global_Root_CA);
 
+void setup() {
+  configTime(3*3600, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
+  WiFiClientSecure client;
+  client.setTrustAnchors(&cert);
+}
+```
+
+#Add Deta
 ```c
 DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
 ```
