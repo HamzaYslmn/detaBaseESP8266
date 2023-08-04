@@ -1,46 +1,32 @@
-#DetabaseEsp8266 Library
-
-## Introduction
-Esp8266 library for more convenient use of deta.sh collections
-
-## Required Items
-To use this library, you'll need the following:
-
-1. Deta Project ID
-2. Deta Project Key (API Key)
-3. Deta Base name
-
-## Wifi Connection
-Use 2.4Ghz Wifi
-
-### Result Struct
-<img width="1246" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/130208c8-2317-4879-9156-c14384fb24bb">
-
-
-#SSL 
-```c
+#include <ArduinoJson.h>
+#include <ESP8266HTTPClient.h>
+#include <ESP8266WiFi.h>
+#include <detabaseEsp8266.h>
 #include "certs.h"
+
+const char* detaKey = "a0uhqqxxxx_xxxxxxxxxxxxxxxxxxxxxxxx";
+const char* detaID = "a0uhqqxxxxx";
+const char* detaBaseName = "LOG";
+const char* ssid = "SSID";
+const char* password = "PASSWORD";
+
+String entryKey = "000MERHABA";
+
+DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
+
 X509List cert(cert_DigiCert_Global_Root_CA);
 
-void setup() {
-  configTime(3*3600, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
-  WiFiClientSecure client;
-  client.setTrustAnchors(&cert);
-}
-```
+bool onboardled;
+int integer = 0;
 
-#Add Deta
-```c
-DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
-```
-#Put Items
-```c
+// Example of PUT request
 void sendDetaSpace() {
   detabase.addData("key", entryKey);
   detabase.addData("stringValue", "merhaba"); // string
-  detabase.addData("intValue", 123);         // int
+  detabase.addData("intValue", integer);         // int
   detabase.addData("floatValue", 123.123f);  // Use the 'f' suffix to specify a float value
   detabase.addData("boolValue", true);       // boolean
+  detabase.addData("0Led State", true);
 
   bool success = detabase.sendData(); // send
 
@@ -55,9 +41,43 @@ void sendDetaSpace() {
     Serial.println("Failed to add data!");
   }
 }
-```
-#Get Item
-```c
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH); // Onboard LED OFF
+
+  configTime(3*3600, 0, "pool.ntp.org"); // For SSL, UTC+3 Turkey
+  WiFiClientSecure client;
+  client.setTrustAnchors(&cert);
+
+  delay(100);
+
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to ");
+  Serial.print(ssid);
+  Serial.println("...");
+
+  int i = 0;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(++i);
+    Serial.print(' ');
+  }
+  Serial.println("Connection Done");
+
+  //Send First Customizations
+  sendDetaSpace();
+}
+
+void loop() {
+  GetDetaSpace();
+  delay(5000);
+  UpdateDetaSpace();
+  delay(15000);
+}
+
+// Example of GET request
 void GetDetaSpace() {
   detabase.getItem(entryKey); // get
   Serial.print("HTTP Response code: ");
@@ -78,21 +98,20 @@ void GetDetaSpace() {
   Serial.println(floatValue);
   Serial.print("boolValue: ");
   Serial.println(boolValue);
-}
-```
-#Delete Item
-```c
-void deleteSpaceKey() {
-  bool isDeleted = detabase.deleteItem(entryKey);
-  if (isDeleted) { // 200 OK
-    Serial.println("Item deleted successfully");
+
+  // Led State Control
+  onboardled = detabase.getBoolData("0Led State");
+  Serial.println("Led State: ");
+  Serial.println(onboardled);
+  if (onboardled) {
+    digitalWrite(LED_BUILTIN, LOW);
+    Serial.println("Led ON");
   } else {
-    Serial.println("Item deletion failed");
+    digitalWrite(LED_BUILTIN, HIGH);
+    Serial.println("Led OFF");
   }
 }
-```
-#Update Item
-```c
+
 void UpdateDetaSpace() {
   detabase.UpdateSet("stringValue", "hehe");
   //detabase.UpdateSet("intValue", 15);
@@ -103,11 +122,11 @@ void UpdateDetaSpace() {
   detabase.UpdateIncrement("floatValue", 1.11f); // f suffix for float
 
   // Append example
-  detabase.UpdateAppend("likes", "ramen"); // Needs to create the field first "likes"
+  //detabase.UpdateAppend("likes", "ramen"); // Needs to create the field first "likes"
   // Prepend example
-  detabase.UpdatePrepend("likes", "pizza"); // Needs to create the field and add a value first "likes" and "pizza" 
+  //detabase.UpdatePrepend("likes", "pizza"); // Needs to create the field and add a value first "likes" and "pizza" 
   // Delete example
-  detabase.UpdateDelete("purchases");  // Delete the whole field
+  //detabase.UpdateDelete("purchases");  // Delete the whole field
 
   // Call detabase.sendUpdate() to send the updates to the database
   bool success = detabase.sendUpdate(entryKey); // send
@@ -123,6 +142,3 @@ void UpdateDetaSpace() {
     Serial.println("Failed to add data!");
   }
 }
-```
-<img width="968" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/4ce0e525-5980-423c-b6c0-6c71752ae59f">
-

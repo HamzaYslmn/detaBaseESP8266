@@ -23,6 +23,85 @@ void DetabaseEsp8266::addData(const char* key, bool value) {
   doc["items"][0][key] = value;
 }
 
+void DetabaseEsp8266::UpdateSet(const char* key, const String& value) {
+  doc["set"][key] = value;
+}
+
+void DetabaseEsp8266::UpdateSet(const char* key, const char* value) {
+  doc["set"][key] = value;
+}
+
+void DetabaseEsp8266::UpdateSet(const char* key, int value) {
+  doc["set"][key] = value;
+}
+
+void DetabaseEsp8266::UpdateSet(const char* key, float value) {
+  doc["set"][key] = value;
+}
+
+void DetabaseEsp8266::UpdateSet(const char* key, bool value) {
+  doc["set"][key] = value;
+}
+
+void DetabaseEsp8266::UpdateIncrement(const char* key, int value) {
+  doc["increment"][key] = value;
+}
+
+void DetabaseEsp8266::UpdateIncrement(const char* key, float value) {
+  doc["increment"][key] = value;
+}
+
+void DetabaseEsp8266::UpdateAppend(const char* key, const String& value) {
+  JsonArray arr = doc["append"][key].to<JsonArray>();
+  arr.add(value);
+}
+
+void DetabaseEsp8266::UpdateAppend(const char* key, const char* value) {
+  JsonArray arr = doc["append"][key].to<JsonArray>();
+  arr.add(value);
+}
+
+void DetabaseEsp8266::UpdatePrepend(const char* key, const String& value) {
+  JsonArray arr = doc["prepend"][key].to<JsonArray>();
+  arr.add(value);
+}
+
+void DetabaseEsp8266::UpdatePrepend(const char* key, const char* value) {
+  JsonArray arr = doc["prepend"][key].to<JsonArray>();
+  arr.add(value);
+}
+
+void DetabaseEsp8266::UpdateDelete(const char* key) {
+  doc["delete"].add(key);
+}
+
+bool DetabaseEsp8266::sendUpdate(const String& key) {
+  // Build the URL for the update
+  String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items/" + key;
+
+  // Serialize the JSON payload to a string
+  String payload;
+  serializeJson(doc, payload);
+
+  // Initialize the HTTP client and set headers
+  WiFiClientSecure client;
+  HTTPClient http;
+  client.setInsecure();
+  http.begin(client, url);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("X-API-Key", String(apiKey));
+
+  // Send the PATCH request with the JSON payload
+  int httpResponseCode = http.PATCH(payload);
+
+  // Store the response code and payload
+  lastResponseCode = httpResponseCode;
+  responsePayload = http.getString();
+
+  // Check the response code
+  return httpResponseCode >= 200 && httpResponseCode < 300;
+}
+
 bool DetabaseEsp8266::sendData() {
   // Build the URL for the base
   String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items";
@@ -48,6 +127,7 @@ bool DetabaseEsp8266::sendData() {
 
   // Check the response code
   return httpResponseCode >= 200 && httpResponseCode < 300;
+  doc.clear();
 }
 
 void DetabaseEsp8266::getItem(const String& key) {
@@ -68,6 +148,8 @@ void DetabaseEsp8266::getItem(const String& key) {
   // Store the response code and payload
   lastResponseCode = httpResponseCode;
   responsePayload = http.getString();
+
+  doc.clear();
 }
 
 bool DetabaseEsp8266::deleteItem(const String& key) {
