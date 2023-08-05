@@ -1,4 +1,9 @@
-#DetabaseEsp8266 Library
+# 
+# [DetabaseEsp8266 Library](https://github.com/HamzaYslmn/detaBaseESP8266](https://github.com/HamzaYslmn/detaBaseESP826)
+
+![https://img.shields.io/github/downloads/HamzaYslmn/detaBaseESP8266/total.svg](https://img.shields.io/github/downloads/HamzaYslmn/detaBaseESP8266/total.svg)
+![https://img.shields.io/github/release/HamzaYslmn/detaBaseESP8266.svg](https://img.shields.io/github/release/HamzaYslmn/detaBaseESP8266.svg)
+![https://img.shields.io/github/stars/HamzaYslmn/detaBaseESP8266.svg?style=social&label=Star&maxAge=2592000](https://img.shields.io/github/stars/HamzaYslmn/detaBaseESP8266.svg?style=social&label=Star&maxAge=2592000)
 
 ## Introduction
 Esp8266 library for more convenient use of deta.sh collections
