@@ -1,4 +1,4 @@
-# [DetabaseEsp8266 Library](https://github.com/HamzaYslmn/detaBaseESP826)
+# [DetabaseEsp8266 Library](https://github.com/HamzaYslmn/detaBaseESP8266)
 
 ![https://img.shields.io/github/downloads/HamzaYslmn/detaBaseESP8266/total.svg](https://img.shields.io/github/downloads/HamzaYslmn/detaBaseESP8266/total.svg)
 ![https://img.shields.io/github/release/HamzaYslmn/detaBaseESP8266.svg](https://img.shields.io/github/release/HamzaYslmn/detaBaseESP8266.svg)
