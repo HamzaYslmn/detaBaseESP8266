@@ -126,8 +126,8 @@ bool DetabaseEsp8266::sendData() {
   responsePayload = http.getString();
 
   // Check the response code
-  return httpResponseCode >= 200 && httpResponseCode < 300;
   doc.clear();
+  return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
 void DetabaseEsp8266::getItem(const String& key) {
@@ -172,6 +172,7 @@ bool DetabaseEsp8266::deleteItem(const String& key) {
   responsePayload = http.getString();
 
   // Check the response code
+  doc.clear();
   return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
