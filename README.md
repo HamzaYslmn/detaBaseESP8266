@@ -132,3 +132,5 @@ void UpdateDetaSpace() {
 ```
 <img width="968" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/4ce0e525-5980-423c-b6c0-6c71752ae59f">
 
+# Relased
+<img width="919" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/e80623a4-8887-4f77-a0fb-408d098368d1">
