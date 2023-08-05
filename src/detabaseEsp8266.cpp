@@ -99,6 +99,7 @@ bool DetabaseEsp8266::sendUpdate(const String& key) {
   responsePayload = http.getString();
 
   // Check the response code
+  doc.clear();
   return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
