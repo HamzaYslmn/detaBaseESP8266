@@ -4,7 +4,7 @@
 ![https://img.shields.io/github/release/HamzaYslmn/detaBaseESP8266.svg](https://img.shields.io/github/release/HamzaYslmn/detaBaseESP8266.svg)
 ![https://img.shields.io/github/stars/HamzaYslmn/detaBaseESP8266.svg?style=social&label=Star&maxAge=2592000](https://img.shields.io/github/stars/HamzaYslmn/detaBaseESP8266.svg?style=social&label=Star&maxAge=2592000)
 
-### [:floppy_disk: En son sürümü indirin](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest/download/detabaseEsp8266.zip)
+# [:floppy_disk: Download Lib](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest/download/detabaseEsp8266.zip)
 
 ## Introduction
 Esp8266 library for more convenient use of deta.sh collections
