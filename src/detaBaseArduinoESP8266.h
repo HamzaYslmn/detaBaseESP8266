@@ -1,1 +1,1 @@
-#define detaBaseArduinoESP8266_H
+#define version 1
