@@ -1,9 +1,10 @@
-# [DetabaseEsp8266 Library](https://github.com/HamzaYslmn/detaBaseESP8266)
-[![Badge Downloads](https://img.shields.io/github/downloads/HamzaYslmn/detaBaseESP8266/total)](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest/download/detabaseEsp8266.zip)
-[![Badge Version](https://img.shields.io/github/v/release/HamzaYslmn/detaBaseESP8266?include_prereleases)](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest)
-![https://github.com/HamzaYslmn/detaBaseESP8266](https://img.shields.io/github/stars/HamzaYslmn/detaBaseESP8266?style=social&label=Star&maxAge=2592000)
+# [detaBaseArduinoESP8266 Library](https://github.com/HamzaYslmn/detaBaseArduinoESP8266)
 
-# [:floppy_disk: Download Lib](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest/download/detabaseEsp8266.zip)
+![https://github.com/HamzaYslmn/detaBaseArduinoESP8266/releases/latest/download/detaBaseArduinoESP8266.zip](https://img.shields.io/github/downloads/HamzaYslmn/detaBaseArduinoESP8266/total)
+![https://github.com/HamzaYslmn/detaBaseArduinoESP8266/releases/latest/](https://img.shields.io/github/release/HamzaYslmn/detaBaseArduinoESP8266)
+![https://github.com/HamzaYslmn/detaBaseArduinoESP8266](https://img.shields.io/github/stars/HamzaYslmn/detaBaseArduinoESP8266?style=social&label=Star&maxAge=2592000)
+
+# [:floppy_disk: Download Lib](https://github.com/HamzaYslmn/detaBaseArduinoESP8266/releases/latest/download/detaBaseArduinoESP8266.zip)
 
 ## Introduction
 Esp8266 library for more convenient use of deta.sh collections
@@ -19,7 +20,7 @@ To use this library, you'll need the following:
 Use 2.4Ghz Wifi
 
 ### Result Struct
-<img width="1246" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/130208c8-2317-4879-9156-c14384fb24bb">
+<img width="1246" alt="image" src="https://github.com/HamzaYslmn/detaBaseArduinoESP8266/assets/78810304/130208c8-2317-4879-9156-c14384fb24bb">
 
 # Esp8266 Pinout
 ```c
@@ -53,7 +54,7 @@ void setup() {
 
 #Add Deta
 ```c
-DetabaseEsp8266 detabase(detaKey, detaID, detaBaseName);
+detaBaseArduinoESP8266 detabase(detaKey, detaID, detaBaseName);
 ```
 #Put Items
 ```c
@@ -146,7 +147,7 @@ void UpdateDetaSpace() {
   }
 }
 ```
-<img width="968" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/4ce0e525-5980-423c-b6c0-6c71752ae59f">
+<img width="968" alt="image" src="https://github.com/HamzaYslmn/detaBaseArduinoESP8266/assets/78810304/4ce0e525-5980-423c-b6c0-6c71752ae59f">
 
 # Relased
-<img width="919" alt="image" src="https://github.com/HamzaYslmn/detaBaseESP8266/assets/78810304/e80623a4-8887-4f77-a0fb-408d098368d1">
+<img width="919" alt="image" src="https://github.com/HamzaYslmn/detaBaseArduinoESP8266/assets/78810304/e80623a4-8887-4f77-a0fb-408d098368d1">

@@ -1,81 +1,81 @@
-#include "detabaseEsp8266.h"
+#include "detaBaseArduinoESP8266.h"
 
-DetabaseEsp8266::DetabaseEsp8266(const char* apiKey, const char* projectId, const char* baseName, size_t capacity)
+detaBaseArduinoESP8266::detaBaseArduinoESP8266(const char* apiKey, const char* projectId, const char* baseName, size_t capacity)
   : apiKey(apiKey), projectId(projectId), baseName(baseName), capacity(capacity), doc(capacity) {}
 
-void DetabaseEsp8266::addData(const char* key, const String& value) {
+void detaBaseArduinoESP8266::addData(const char* key, const String& value) {
   doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const char* key, const char* value) {
+void detaBaseArduinoESP8266::addData(const char* key, const char* value) {
   doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const char* key, int value) {
+void detaBaseArduinoESP8266::addData(const char* key, int value) {
   doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const char* key, float value) {
+void detaBaseArduinoESP8266::addData(const char* key, float value) {
   doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::addData(const char* key, bool value) {
+void detaBaseArduinoESP8266::addData(const char* key, bool value) {
   doc["items"][0][key] = value;
 }
 
-void DetabaseEsp8266::UpdateSet(const char* key, const String& value) {
+void detaBaseArduinoESP8266::UpdateSet(const char* key, const String& value) {
   doc["set"][key] = value;
 }
 
-void DetabaseEsp8266::UpdateSet(const char* key, const char* value) {
+void detaBaseArduinoESP8266::UpdateSet(const char* key, const char* value) {
   doc["set"][key] = value;
 }
 
-void DetabaseEsp8266::UpdateSet(const char* key, int value) {
+void detaBaseArduinoESP8266::UpdateSet(const char* key, int value) {
   doc["set"][key] = value;
 }
 
-void DetabaseEsp8266::UpdateSet(const char* key, float value) {
+void detaBaseArduinoESP8266::UpdateSet(const char* key, float value) {
   doc["set"][key] = value;
 }
 
-void DetabaseEsp8266::UpdateSet(const char* key, bool value) {
+void detaBaseArduinoESP8266::UpdateSet(const char* key, bool value) {
   doc["set"][key] = value;
 }
 
-void DetabaseEsp8266::UpdateIncrement(const char* key, int value) {
+void detaBaseArduinoESP8266::UpdateIncrement(const char* key, int value) {
   doc["increment"][key] = value;
 }
 
-void DetabaseEsp8266::UpdateIncrement(const char* key, float value) {
+void detaBaseArduinoESP8266::UpdateIncrement(const char* key, float value) {
   doc["increment"][key] = value;
 }
 
-void DetabaseEsp8266::UpdateAppend(const char* key, const String& value) {
+void detaBaseArduinoESP8266::UpdateAppend(const char* key, const String& value) {
   JsonArray arr = doc["append"][key].to<JsonArray>();
   arr.add(value);
 }
 
-void DetabaseEsp8266::UpdateAppend(const char* key, const char* value) {
+void detaBaseArduinoESP8266::UpdateAppend(const char* key, const char* value) {
   JsonArray arr = doc["append"][key].to<JsonArray>();
   arr.add(value);
 }
 
-void DetabaseEsp8266::UpdatePrepend(const char* key, const String& value) {
+void detaBaseArduinoESP8266::UpdatePrepend(const char* key, const String& value) {
   JsonArray arr = doc["prepend"][key].to<JsonArray>();
   arr.add(value);
 }
 
-void DetabaseEsp8266::UpdatePrepend(const char* key, const char* value) {
+void detaBaseArduinoESP8266::UpdatePrepend(const char* key, const char* value) {
   JsonArray arr = doc["prepend"][key].to<JsonArray>();
   arr.add(value);
 }
 
-void DetabaseEsp8266::UpdateDelete(const char* key) {
+void detaBaseArduinoESP8266::UpdateDelete(const char* key) {
   doc["delete"].add(key);
 }
 
-bool DetabaseEsp8266::sendUpdate(const String& key) {
+bool detaBaseArduinoESP8266::sendUpdate(const String& key) {
   // Build the URL for the update
   String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items/" + key;
 
@@ -103,7 +103,7 @@ bool DetabaseEsp8266::sendUpdate(const String& key) {
   return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
-bool DetabaseEsp8266::sendData() {
+bool detaBaseArduinoESP8266::sendData() {
   // Build the URL for the base
   String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items";
 
@@ -131,7 +131,7 @@ bool DetabaseEsp8266::sendData() {
   return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
-void DetabaseEsp8266::getItem(const String& key) {
+void detaBaseArduinoESP8266::getItem(const String& key) {
   // Build the URL for the specific item
   String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items/" + key;
 
@@ -153,7 +153,7 @@ void DetabaseEsp8266::getItem(const String& key) {
   doc.clear();
 }
 
-bool DetabaseEsp8266::deleteItem(const String& key) {
+bool detaBaseArduinoESP8266::deleteItem(const String& key) {
   // Build the URL for the specific item
   String url = "https://database.deta.sh/v1/" + String(projectId) + "/" + String(baseName) + "/items/" + key;
 
@@ -177,25 +177,25 @@ bool DetabaseEsp8266::deleteItem(const String& key) {
   return httpResponseCode >= 200 && httpResponseCode < 300;
 }
 
-String DetabaseEsp8266::getData(const char* key) {
+String detaBaseArduinoESP8266::getData(const char* key) {
   DynamicJsonDocument doc(capacity);
   deserializeJson(doc, responsePayload);
   return doc[key].as<String>();
 }
 
-int DetabaseEsp8266::getIntData(const char* key) {
+int detaBaseArduinoESP8266::getIntData(const char* key) {
   DynamicJsonDocument doc(capacity);
   deserializeJson(doc, responsePayload);
   return doc[key].as<int>();
 }
 
-float DetabaseEsp8266::getFloatData(const char* key) {
+float detaBaseArduinoESP8266::getFloatData(const char* key) {
   DynamicJsonDocument doc(capacity);
   deserializeJson(doc, responsePayload);
   return doc[key].as<float>();
 }
 
-bool DetabaseEsp8266::getBoolData(const char* key) {
+bool detaBaseArduinoESP8266::getBoolData(const char* key) {
   DynamicJsonDocument doc(capacity);
   deserializeJson(doc, responsePayload);
   return doc[key].as<String>() == "true";
