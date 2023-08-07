@@ -1,5 +1,7 @@
 # [DetabaseEsp8266 Library](https://github.com/HamzaYslmn/detaBaseESP8266)
-[![Badge Downloads](https://img.shields.io/github/downloads/HamzaYslmn/detaBaseESP8266/total)](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest/download/detabaseEsp8266.zip) [![Badge Version](https://img.shields.io/github/v/release/HamzaYslmn/detaBaseESP8266?include_prereleases)](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest) ![https://github.com/HamzaYslmn/detaBaseESP8266](https://img.shields.io/github/stars/HamzaYslmn/detaBaseESP8266?style=social&label=Star&maxAge=2592000)
+[![Badge Downloads](https://img.shields.io/github/downloads/HamzaYslmn/detaBaseESP8266/total)](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest/download/detabaseEsp8266.zip)
+[![Badge Version](https://img.shields.io/github/v/release/HamzaYslmn/detaBaseESP8266?include_prereleases)](https://github.com/HamzaYslmn/detaBaseESP8266/releases/latest) 
+![https://github.com/HamzaYslmn/detaBaseESP8266](https://img.shields.io/github/stars/HamzaYslmn/detaBaseESP8266?style=social&label=Star&maxAge=2592000)
 
 # [:floppy_disk: Download Lib](https://github.com/HamzaYslmn/detaBaseArduinoESP8266/releases/latest/download/detaBaseArduinoESP8266.zip)
 
