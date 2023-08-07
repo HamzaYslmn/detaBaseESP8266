@@ -18,7 +18,7 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
-#include <detaBaseESP8266.h>
+#include <detaBaseArduinoESP8266.h>
 #include "certs.h"
 
 const char* detaKey = "a0uhqqxxxx_xxxxxxxxxxxxxxxxxxxxxxxx";
@@ -30,7 +30,7 @@ const char* password = "PASSWORD";
 unsigned long previousMillis = 0;
 const long interval = 4000; // 4 seconds
 
-detaBaseESP8266 detabase(detaKey, detaID, detaBaseName);
+detaBaseArduinoESP8266 detabase(detaKey, detaID, detaBaseName);
 X509List cert(cert_DigiCert_Global_Root_CA);
 
 bool onboardled;
