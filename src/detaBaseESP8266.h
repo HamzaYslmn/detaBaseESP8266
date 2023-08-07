@@ -1,13 +1,13 @@
-#ifndef detaBaseArduinoESP8266_H
-#define detaBaseArduinoESP8266_H
+#ifndef detaBaseESP8266_H
+#define detaBaseESP8266_H
 
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 
-class detaBaseArduinoESP8266 {
+class detaBaseESP8266 {
 public:
-  detaBaseArduinoESP8266(const char* apiKey = "", const char* projectId = "", const char* baseName = "", size_t capacity = 512);
+  detaBaseESP8266(const char* apiKey = "", const char* projectId = "", const char* baseName = "", size_t capacity = 512);
 
   //PUT
   void addData(const char* key, const String& value);
