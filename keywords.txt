@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map For detaBaseArduinoESP8266
+# Syntax Coloring Map For detaBaseESP8266
 #######################################
 
 #######################################
 # Library (KEYWORD3)
 #######################################
 
-detaBaseArduinoESP8266	KEYWORD3
+detaBaseESP8266	KEYWORD3
 
 #######################################
 # Datatypes (KEYWORD1)
